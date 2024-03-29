@@ -85,6 +85,19 @@ If set, the endpoint passed in the TransportChannelProvider is used.
 2. If set via the ClientSettings, use this endpoint. Otherwise, go to the next step.
 3. Use the default endpoint (Request will hit Google servers)
 
+### How can I confirm the endpoint the library is using?
+Assuming you have configured a custom endpoint, like: 
+```java
+String endpoint = "...";
+KeyManagementServiceSettings keyManagementServiceSettings =
+  KeyManagementServiceSettings.newBuilder()
+    .setEndpoint(endpoint)
+    .build();
+```
+
+You can retrieve the endpoint from the Setting's `getEndpoint()` method. This will return
+the resolved endpoint back.
+
 ## When should I specify my custom endpoint
 There are a few use cases:
 1. Service offers [regional endpoints](https://cloud.google.com/java/docs/setup#configure_endpoints_for_the_client_library)
