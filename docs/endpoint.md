@@ -3,13 +3,13 @@ Client libraries will automatically resolve an endpoint for the client to use.
 The default endpoint will attempt to connect to Google servers.
 
 ## Anatomy of an Endpoint
-Using a sample Java-Speech endpoint as an example: `https://speech.googleapis.com:443`:
+Using the default Java-Speech endpoint as an example: `https://speech.googleapis.com:443`:
 
 | Scheme   	| Service Name 	| Universe Domain 	| Port 	|
 |----------	|--------------	|-----------------	|------	|
 | https:// 	| speech       	| googleapis.com  	| 443  	|
 
-Default Values:
+Default Values for client libraries:
 - Scheme: https://
 - [Universe Domain](universe_domain.md): googleapis.com
 - Port: 443
@@ -24,7 +24,9 @@ The following example is using Java-KMS v2.42.0 as an example:
 ```java
 String endpoint = "mycoolendpoint.com";
 KeyManagementServiceSettings keyManagementServiceSettings =
-  KeyManagementServiceSettings.newBuilder().setEndpoint(endpoint).build();
+  KeyManagementServiceSettings.newBuilder()
+    .setEndpoint(endpoint)
+    .build();
 ```
 2. Create the client with the Settings
 ```java
@@ -83,9 +85,9 @@ If set, the endpoint passed in the TransportChannelProvider is used.
 ### Endpoint Hierarchy
 1. If set in the TransportChannelProvider, use this endpoint. Otherwise, go to the next step.
 2. If set via the ClientSettings, use this endpoint. Otherwise, go to the next step.
-3. Use the default endpoint (Request will hit Google servers)
+3. Use the default endpoint (Default endpoint will hit Google servers)
 
-### How can I confirm the endpoint the library is using?
+### How can I confirm the endpoint the library is using
 Assuming you have configured a custom endpoint, like: 
 ```java
 String endpoint = "...";
