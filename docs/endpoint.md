@@ -14,10 +14,13 @@ Default values for client libraries:
 - [Universe Domain](universe_domain.md): googleapis.com
 - Port: 443
 
+Service Name doesn't have a default value. This is different for each cloud service.
+
 ## Configuring a Specific Endpoint
-There are two ways to configure the endpoint in Java Client Libraries. Configuring the endpoint
-will update the entire endpoint value. Currently, you cannot change the individual sections of the
-endpoint (i.e. set the scheme or port value individually). 
+There are two ways to configure the endpoint in Java Client Libraries. 
+
+Configuring the endpoint will update the *entire* endpoint value. Currently, you cannot change
+the individual sections of the endpoint (i.e. set the scheme or port value individually). 
 
 Note: You may configure the [Universe Domain](universe_domain.md) in a separate Setter.
 
@@ -71,8 +74,8 @@ The endpoint will be resolved to `transportendpoint.com`.
 If you are setting an endpoint via both methods above, like:
 ```java
 String endpoint1 = "transportEndpoint.com";
-    InstantiatingGrpcChannelProvider instantiatingGrpcChannelProvider =
-    InstantiatingGrpcChannelProvider.newBuilder()
+  InstantiatingGrpcChannelProvider instantiatingGrpcChannelProvider =
+  InstantiatingGrpcChannelProvider.newBuilder()
     .setEndpoint(endpoint1)
     // ... Other required configurations
     .build();
@@ -87,9 +90,9 @@ KeyManagementServiceSettings keyManagementServiceSettings =
 The endpoint will be resolved to `transportendpoint.com`.
 
 ### Endpoint Hierarchy
-1. If set in the TransportChannelProvider, use this endpoint. Otherwise, go to the next step.
-2. If set via the ClientSettings, use this endpoint. Otherwise, go to the next step.
-3. Use the default endpoint (Default endpoint will hit Google servers)
+1. If set in the TransportChannelProvider, use this value. Otherwise, go to the next step.
+2. If set via the ClientSettings, use this value. Otherwise, go to the next step.
+3. Use the default endpoint
 
 ### How can I confirm the endpoint the library is using
 Assuming you have configured a custom endpoint, like: 
@@ -106,5 +109,5 @@ the resolved endpoint back.
 
 ## When should I specify my custom endpoint
 There are a few use cases:
-1. Service offers [regional endpoints](https://cloud.google.com/java/docs/setup#configure_endpoints_for_the_client_library)
-2. You do not want to use https (i.e. local testing)
+1. Service offers [regional endpoints](https://cloud.google.com/java/docs/setup#configure_endpoints_for_the_client_library) and should not hit the default endpoint.
+2. Service can't use https (i.e. local testing to hit localhost)

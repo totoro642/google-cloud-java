@@ -3,8 +3,7 @@ See [Anatomy of an Endpoint](endpoint.md#anatomy-of-an-endpoint) for more inform
 about how the Universe Domain is used as part of an endpoint.
 
 Universe Domain default value: `googleapis.com`. This is known as the Google Default
-Universe (GDU). If the Universe Domain value is not specified in the settings, the GDU
-value is the one used.
+Universe (GDU). If the Universe Domain value is not specified, the GDU value is used.
 
 ## Configuring a Specific Universe Domain
 There are two ways to configure the endpoint in Java Client Libraries.
@@ -30,8 +29,8 @@ With this configuration, the client library will resolve the endpoint to be:
 `https://cloudkms.myuniversedomain.com:443`.
 
 ### Set through an Environment Variable
-Set the Universe Domain to the `GOOGLE_CLOUD_UNIVERSE_DOMAIN`. Java client libraries will attempt
-to read this value.
+Set the Universe Domain to the `GOOGLE_CLOUD_UNIVERSE_DOMAIN`. If set, Java client libraries
+will read this value and use it.
 
 ### Universe Domain Hierarchy
 1. If set in the ClientSettings, use this value. Otherwise, go to the next step.
@@ -57,7 +56,7 @@ KeyManagementServiceSettings keyManagementServiceSettings =
 
 The custom set endpoint triumphs over other configurations.
 
-### How can I confirm the universe domain the library is using?
+### How can I confirm the universe domain the library is using
 Assuming you have configured a custom endpoint, like:
 ```java
 String universeDomain = "...";
