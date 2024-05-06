@@ -33,75 +33,75 @@ set -e
 while [[ $# -gt 0 ]]; do
 key="$1"
 case "${key}" in
-  --base_ref)
-    base_ref="$2"
-    shift
-    ;;
-  --base_repo)
-      base_repo="$2"
-      shift
-      ;;
-  --head_ref)
-    head_ref="$2"
-    shift
-    ;;
-  --head_repo_url)
-      head_repo_url="$2"
-      shift
-      ;;
-  --head_repo_name)
-      head_repo_name="$2"
-      shift
-      ;;
-  --image_tag)
-    image_tag="$2"
-    shift
-    ;;
-  --generation_config)
-    generation_config="$2"
-    shift
-    ;;
-  *)
-    echo "Invalid option: [$1]"
-    exit 1
-    ;;
+    --base_ref)
+        base_ref="$2"
+        shift
+        ;;
+    --base_repo)
+          base_repo="$2"
+          shift
+          ;;
+    --head_ref)
+        head_ref="$2"
+        shift
+        ;;
+    --head_repo_url)
+          head_repo_url="$2"
+          shift
+          ;;
+    --head_repo_name)
+          head_repo_name="$2"
+          shift
+          ;;
+    --image_tag)
+        image_tag="$2"
+        shift
+        ;;
+    --generation_config)
+        generation_config="$2"
+        shift
+        ;;
+    *)
+        echo "Invalid option: [$1]"
+        exit 1
+        ;;
 esac
 shift
 done
 
 if [ -z "${base_ref}" ]; then
-  echo "missing required argument --base_ref"
-  exit 1
+    echo "missing required argument --base_ref"
+    exit 1
 fi
 
 if [ -z "${base_repo}" ]; then
-  echo "missing required argument --base_repo"
-  exit 1
+    echo "missing required argument --base_repo"
+    exit 1
 fi
 
 if [ -z "${head_ref}" ]; then
-  echo "missing required argument --head_ref"
-  exit 1
+    echo "missing required argument --head_ref"
+    exit 1
 fi
 
 if [ -z "${head_repo_url}" ]; then
-  echo "missing required argument --head_repo_url"
-  exit 1
+    echo "missing required argument --head_repo_url"
+    exit 1
 fi
 
 if [ -z "${head_repo_name}" ]; then
-  echo "missing required argument --head_repo_name"
-  exit 1
+    echo "missing required argument --head_repo_name"
+    exit 1
 fi
 
 if [ -z "${image_tag}" ]; then
-  echo "missing required argument --image_tag"
-  exit 1
+    echo "missing required argument --image_tag"
+    exit 1
 fi
 
 if [ -z "${generation_config}" ]; then
-  generation_config=generation_config.yaml
-  echo "Use default generation config: ${generation_config}"
+    generation_config=generation_config.yaml
+    echo "Use default generation config: ${generation_config}"
 fi
 
 fork="forked-repo"
@@ -148,13 +148,9 @@ fi
 echo "Configuration diff:"
 echo "${config_diff}"
 git commit -m "${message}"
-if [[ "${head_repo_name}" == "${base_repo}" ]]; then
-    git push
-    # set pr body if pr_description.txt is generated.
-    if [[ -f "pr_description.txt" ]]; then
-        pr_num=$(gh pr list -s open -H "${head_ref}" -q . --json number | jq ".[] | .number")
-        gh pr edit "${pr_num}" --body "$(cat pr_description.txt)"
-    fi
-else
-    git push "https://x-access-token:${GH_TOKEN}@github.com/${head_repo_name}" HEAD:"${head_ref}"
+git push
+# set pr body if pr_description.txt is generated.
+if [[ -f "pr_description.txt" ]]; then
+    pr_num=$(gh pr list -s open -H "${head_ref}" -q . --json number | jq ".[] | .number")
+    gh pr edit "${pr_num}" --body "$(cat pr_description.txt)"
 fi
