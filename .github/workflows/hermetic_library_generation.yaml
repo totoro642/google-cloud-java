@@ -15,7 +15,7 @@
 # downstream client libraries before they are released.
 name: Hermetic library generation upon generation config change through pull requests
 on:
-  pull_request:
+  pull_request_target:
 
 jobs:
   library_generation:
