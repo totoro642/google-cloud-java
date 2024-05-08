@@ -43,10 +43,23 @@
     },
     {
       "fileMatch": [
-        "README.md"
+        "java-dns/README.md",
+        "java-grafeas/README.md",
+        "java-notification/README.md",
+        "java-vertexai/README.md"
       ],
       "matchStrings": [
         "<artifactId>libraries-bom</artifactId>\\s+<version>(?<currentValue>.*?)</version>"
+      ],
+      "depNameTemplate": "com.google.cloud:libraries-bom",
+      "datasourceTemplate": "maven"
+    },
+    {
+      "fileMatch": [
+        "generation_config.yaml"
+      ],
+      "matchStrings": [
+        "libraries_bom_version\\s*:\\s*(?<currentValue>.*?)\\n"
       ],
       "depNameTemplate": "com.google.cloud:libraries-bom",
       "datasourceTemplate": "maven"

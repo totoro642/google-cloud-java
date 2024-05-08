@@ -47,7 +47,7 @@ import com.google.cloud.vertexai.api.Schema;
 import com.google.cloud.vertexai.api.Tool;
 import com.google.cloud.vertexai.api.Type;
 import com.google.cloud.vertexai.api.VertexAISearch;
-import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -66,8 +66,6 @@ public final class GenerativeModelTest {
   private static final String PROJECT = "test_project";
   private static final String LOCATION = "test_location";
   private static final String MODEL_NAME = "gemini-pro";
-  private static final String MODEL_NAME_2 = "models/gemini-pro";
-  private static final String MODEL_NAME_3 = "publishers/google/models/gemini-pro";
   private static final GenerationConfig GENERATION_CONFIG =
       GenerationConfig.newBuilder().setCandidateCount(1).build();
   private static final GenerationConfig DEFAULT_GENERATION_CONFIG =
@@ -143,12 +141,17 @@ public final class GenerativeModelTest {
   @Mock private ApiFuture<GenerateContentResponse> mockApiFuture;
 
   @Before
-  public void doBeforeEachTest() {
+  public void setUp() {
+    when(mockPredictionServiceClient.generateContentCallable()).thenReturn(mockUnaryCallable);
+    when(mockUnaryCallable.futureCall(any(GenerateContentRequest.class))).thenReturn(mockApiFuture);
+
     vertexAi =
         new VertexAI.Builder()
             .setProjectId(PROJECT)
             .setLocation(LOCATION)
             .setCredentials(mockGoogleCredentials)
+            .setLlmClientSupplier(() -> mockLlmUtilityServiceClient)
+            .setPredictionClientSupplier(() -> mockPredictionServiceClient)
             .build();
   }
 
@@ -238,10 +241,6 @@ public final class GenerativeModelTest {
   public void testCountTokenswithText() throws Exception {
     model = new GenerativeModel(MODEL_NAME, vertexAi);
 
-    Field field = VertexAI.class.getDeclaredField("llmUtilityClient");
-    field.setAccessible(true);
-    field.set(vertexAi, mockLlmUtilityServiceClient);
-
     CountTokensResponse unused = model.countTokens(TEXT);
 
     ArgumentCaptor<CountTokensRequest> request = ArgumentCaptor.forClass(CountTokensRequest.class);
@@ -252,10 +251,6 @@ public final class GenerativeModelTest {
   @Test
   public void testCountTokenswithContent() throws Exception {
     model = new GenerativeModel(MODEL_NAME, vertexAi);
-
-    Field field = VertexAI.class.getDeclaredField("llmUtilityClient");
-    field.setAccessible(true);
-    field.set(vertexAi, mockLlmUtilityServiceClient);
 
     Content content = ContentMaker.fromString(TEXT);
     CountTokensResponse unused = model.countTokens(content);
@@ -269,10 +264,6 @@ public final class GenerativeModelTest {
   public void testCountTokenswithContents() throws Exception {
     model = new GenerativeModel(MODEL_NAME, vertexAi);
 
-    Field field = VertexAI.class.getDeclaredField("llmUtilityClient");
-    field.setAccessible(true);
-    field.set(vertexAi, mockLlmUtilityServiceClient);
-
     Content content = ContentMaker.fromString(TEXT);
     CountTokensResponse unused = model.countTokens(Arrays.asList(content));
 
@@ -284,10 +275,6 @@ public final class GenerativeModelTest {
   @Test
   public void testGenerateContentwithText() throws Exception {
     model = new GenerativeModel(MODEL_NAME, vertexAi);
-
-    Field field = VertexAI.class.getDeclaredField("predictionServiceClient");
-    field.setAccessible(true);
-    field.set(vertexAi, mockPredictionServiceClient);
 
     when(mockPredictionServiceClient.generateContentCallable()).thenReturn(mockUnaryCallable);
     when(mockUnaryCallable.call(any(GenerateContentRequest.class)))
@@ -304,10 +291,6 @@ public final class GenerativeModelTest {
   @Test
   public void testGenerateContentwithContent() throws Exception {
     model = new GenerativeModel(MODEL_NAME, vertexAi);
-
-    Field field = VertexAI.class.getDeclaredField("predictionServiceClient");
-    field.setAccessible(true);
-    field.set(vertexAi, mockPredictionServiceClient);
 
     when(mockPredictionServiceClient.generateContentCallable()).thenReturn(mockUnaryCallable);
     when(mockUnaryCallable.call(any(GenerateContentRequest.class)))
@@ -327,10 +310,6 @@ public final class GenerativeModelTest {
   public void testGenerateContentwithContents() throws Exception {
     model = new GenerativeModel(MODEL_NAME, vertexAi);
 
-    Field field = VertexAI.class.getDeclaredField("predictionServiceClient");
-    field.setAccessible(true);
-    field.set(vertexAi, mockPredictionServiceClient);
-
     when(mockPredictionServiceClient.generateContentCallable()).thenReturn(mockUnaryCallable);
     when(mockUnaryCallable.call(any(GenerateContentRequest.class)))
         .thenReturn(mockGenerateContentResponse);
@@ -346,6 +325,28 @@ public final class GenerativeModelTest {
   }
 
   @Test
+  public void testGenerateContentwithSystemInstruction() throws Exception {
+    when(mockPredictionServiceClient.generateContentCallable()).thenReturn(mockUnaryCallable);
+    when(mockUnaryCallable.call(any(GenerateContentRequest.class)))
+        .thenReturn(mockGenerateContentResponse);
+
+    String systemInstructionText =
+        "You're a helpful assistant that starts all its answers with: \"COOL\"";
+    Content systemInstruction = ContentMaker.fromString(systemInstructionText);
+
+    model = new GenerativeModel(MODEL_NAME, vertexAi).withSystemInstruction(systemInstruction);
+
+    Content content = ContentMaker.fromString(TEXT);
+    GenerateContentResponse unused = model.generateContent(Arrays.asList(content));
+
+    ArgumentCaptor<GenerateContentRequest> request =
+        ArgumentCaptor.forClass(GenerateContentRequest.class);
+    verify(mockUnaryCallable).call(request.capture());
+    assertThat(request.getValue().getSystemInstruction().getParts(0).getText())
+        .isEqualTo(systemInstructionText);
+  }
+
+  @Test
   public void testGenerateContentwithDefaultGenerationConfig() throws Exception {
     model =
         new GenerativeModel.Builder()
@@ -353,10 +354,6 @@ public final class GenerativeModelTest {
             .setModelName(MODEL_NAME)
             .setGenerationConfig(DEFAULT_GENERATION_CONFIG)
             .build();
-
-    Field field = VertexAI.class.getDeclaredField("predictionServiceClient");
-    field.setAccessible(true);
-    field.set(vertexAi, mockPredictionServiceClient);
 
     when(mockPredictionServiceClient.generateContentCallable()).thenReturn(mockUnaryCallable);
     when(mockUnaryCallable.call(any(GenerateContentRequest.class)))
@@ -380,10 +377,6 @@ public final class GenerativeModelTest {
             .setVertexAi(vertexAi)
             .build();
 
-    Field field = VertexAI.class.getDeclaredField("predictionServiceClient");
-    field.setAccessible(true);
-    field.set(vertexAi, mockPredictionServiceClient);
-
     when(mockPredictionServiceClient.generateContentCallable()).thenReturn(mockUnaryCallable);
     when(mockUnaryCallable.call(any(GenerateContentRequest.class)))
         .thenReturn(mockGenerateContentResponse);
@@ -406,10 +399,6 @@ public final class GenerativeModelTest {
             .setTools(tools)
             .build();
 
-    Field field = VertexAI.class.getDeclaredField("predictionServiceClient");
-    field.setAccessible(true);
-    field.set(vertexAi, mockPredictionServiceClient);
-
     when(mockPredictionServiceClient.generateContentCallable()).thenReturn(mockUnaryCallable);
     when(mockUnaryCallable.call(any(GenerateContentRequest.class)))
         .thenReturn(mockGenerateContentResponse);
@@ -426,10 +415,6 @@ public final class GenerativeModelTest {
   @Test
   public void testGenerateContentwithFluentApi() throws Exception {
     model = new GenerativeModel(MODEL_NAME, vertexAi);
-
-    Field field = VertexAI.class.getDeclaredField("predictionServiceClient");
-    field.setAccessible(true);
-    field.set(vertexAi, mockPredictionServiceClient);
 
     when(mockPredictionServiceClient.generateContentCallable()).thenReturn(mockUnaryCallable);
     when(mockUnaryCallable.call(any(GenerateContentRequest.class)))
@@ -452,12 +437,18 @@ public final class GenerativeModelTest {
   }
 
   @Test
+  public void generateContent_withNullContents_throws() throws Exception {
+    model = new GenerativeModel(MODEL_NAME, vertexAi);
+    List<Content> contents = null;
+
+    IllegalArgumentException thrown =
+        assertThrows(IllegalArgumentException.class, () -> model.generateContent(contents));
+    assertThat(thrown).hasMessageThat().isEqualTo("contents can't be null or empty.");
+  }
+
+  @Test
   public void testGenerateContentStreamwithText() throws Exception {
     model = new GenerativeModel(MODEL_NAME, vertexAi);
-
-    Field field = VertexAI.class.getDeclaredField("predictionServiceClient");
-    field.setAccessible(true);
-    field.set(vertexAi, mockPredictionServiceClient);
 
     when(mockPredictionServiceClient.streamGenerateContentCallable())
         .thenReturn(mockServerStreamCallable);
@@ -477,10 +468,6 @@ public final class GenerativeModelTest {
   @Test
   public void testGenerateContentStreamwithContent() throws Exception {
     model = new GenerativeModel(MODEL_NAME, vertexAi);
-
-    Field field = VertexAI.class.getDeclaredField("predictionServiceClient");
-    field.setAccessible(true);
-    field.set(vertexAi, mockPredictionServiceClient);
 
     when(mockPredictionServiceClient.streamGenerateContentCallable())
         .thenReturn(mockServerStreamCallable);
@@ -502,10 +489,6 @@ public final class GenerativeModelTest {
   @Test
   public void testGenerateContentStreamwithContents() throws Exception {
     model = new GenerativeModel(MODEL_NAME, vertexAi);
-
-    Field field = VertexAI.class.getDeclaredField("predictionServiceClient");
-    field.setAccessible(true);
-    field.set(vertexAi, mockPredictionServiceClient);
 
     when(mockPredictionServiceClient.streamGenerateContentCallable())
         .thenReturn(mockServerStreamCallable);
@@ -533,10 +516,6 @@ public final class GenerativeModelTest {
             .setVertexAi(vertexAi)
             .build();
 
-    Field field = VertexAI.class.getDeclaredField("predictionServiceClient");
-    field.setAccessible(true);
-    field.set(vertexAi, mockPredictionServiceClient);
-
     when(mockPredictionServiceClient.streamGenerateContentCallable())
         .thenReturn(mockServerStreamCallable);
     when(mockServerStreamCallable.call(any(GenerateContentRequest.class)))
@@ -559,10 +538,6 @@ public final class GenerativeModelTest {
             .setSafetySettings(defaultSafetySettings)
             .setVertexAi(vertexAi)
             .build();
-
-    Field field = VertexAI.class.getDeclaredField("predictionServiceClient");
-    field.setAccessible(true);
-    field.set(vertexAi, mockPredictionServiceClient);
 
     when(mockPredictionServiceClient.streamGenerateContentCallable())
         .thenReturn(mockServerStreamCallable);
@@ -587,10 +562,6 @@ public final class GenerativeModelTest {
             .setTools(tools)
             .build();
 
-    Field field = VertexAI.class.getDeclaredField("predictionServiceClient");
-    field.setAccessible(true);
-    field.set(vertexAi, mockPredictionServiceClient);
-
     when(mockPredictionServiceClient.streamGenerateContentCallable())
         .thenReturn(mockServerStreamCallable);
     when(mockServerStreamCallable.call(any(GenerateContentRequest.class)))
@@ -608,10 +579,6 @@ public final class GenerativeModelTest {
   @Test
   public void testGenerateContentStreamwithFluentApi() throws Exception {
     model = new GenerativeModel(MODEL_NAME, vertexAi);
-
-    Field field = VertexAI.class.getDeclaredField("predictionServiceClient");
-    field.setAccessible(true);
-    field.set(vertexAi, mockPredictionServiceClient);
 
     when(mockPredictionServiceClient.streamGenerateContentCallable())
         .thenReturn(mockServerStreamCallable);
@@ -636,12 +603,18 @@ public final class GenerativeModelTest {
   }
 
   @Test
+  public void generateContentStream_withEmptyContents_throws() throws Exception {
+    model = new GenerativeModel(MODEL_NAME, vertexAi);
+    List<Content> contents = new ArrayList<>();
+
+    IllegalArgumentException thrown =
+        assertThrows(IllegalArgumentException.class, () -> model.generateContentStream(contents));
+    assertThat(thrown).hasMessageThat().isEqualTo("contents can't be null or empty.");
+  }
+
+  @Test
   public void generateContentAsync_withText_sendsCorrectRequest() throws Exception {
     model = new GenerativeModel(MODEL_NAME, vertexAi);
-
-    Field field = VertexAI.class.getDeclaredField("predictionServiceClient");
-    field.setAccessible(true);
-    field.set(vertexAi, mockPredictionServiceClient);
 
     when(mockPredictionServiceClient.generateContentCallable()).thenReturn(mockUnaryCallable);
     when(mockUnaryCallable.futureCall(any(GenerateContentRequest.class))).thenReturn(mockApiFuture);
@@ -660,10 +633,6 @@ public final class GenerativeModelTest {
   public void generateContentAsync_withContent_sendsCorrectRequest() throws Exception {
     model = new GenerativeModel(MODEL_NAME, vertexAi);
 
-    Field field = VertexAI.class.getDeclaredField("predictionServiceClient");
-    field.setAccessible(true);
-    field.set(vertexAi, mockPredictionServiceClient);
-
     when(mockPredictionServiceClient.generateContentCallable()).thenReturn(mockUnaryCallable);
     when(mockUnaryCallable.futureCall(any(GenerateContentRequest.class))).thenReturn(mockApiFuture);
 
@@ -680,10 +649,6 @@ public final class GenerativeModelTest {
   @Test
   public void generateContentAsync_withContents_sendsCorrectRequest() throws Exception {
     model = new GenerativeModel(MODEL_NAME, vertexAi);
-
-    Field field = VertexAI.class.getDeclaredField("predictionServiceClient");
-    field.setAccessible(true);
-    field.set(vertexAi, mockPredictionServiceClient);
 
     when(mockPredictionServiceClient.generateContentCallable()).thenReturn(mockUnaryCallable);
     when(mockUnaryCallable.futureCall(any(GenerateContentRequest.class))).thenReturn(mockApiFuture);

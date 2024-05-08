@@ -1,5 +1,20 @@
 # Changelog
 
+## 2.42.0 (2024-04-25)
+
+### Features
+
+* mark parent/name fields with the REQUIRED field_behavior annotation
+* mark parent/name fields with the REQUIRED field_behavior annotation ([a1e72bb](https://github.com/googleapis/google-cloud-java/commit/a1e72bb1f08d20ff2580ccd1b280c77fa49dbdeb))
+* updated comments ([a1e72bb](https://github.com/googleapis/google-cloud-java/commit/a1e72bb1f08d20ff2580ccd1b280c77fa49dbdeb))
+
+
+
+## 2.41.0 (2024-04-04)
+
+* No change
+
+
 ## 2.39.0 (2024-03-28)
 
 * No change

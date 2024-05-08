@@ -89,6 +89,7 @@ import com.google.cloud.aiplatform.v1beta1.SavedQuery;
 import com.google.cloud.aiplatform.v1beta1.SearchDataItemsRequest;
 import com.google.cloud.aiplatform.v1beta1.SearchDataItemsResponse;
 import com.google.cloud.aiplatform.v1beta1.UpdateDatasetRequest;
+import com.google.cloud.aiplatform.v1beta1.UpdateDatasetVersionRequest;
 import com.google.cloud.location.GetLocationRequest;
 import com.google.cloud.location.ListLocationsRequest;
 import com.google.cloud.location.ListLocationsResponse;
@@ -177,6 +178,8 @@ public class DatasetServiceStubSettings extends StubSettings<DatasetServiceStubS
   private final OperationCallSettings<
           CreateDatasetVersionRequest, DatasetVersion, CreateDatasetVersionOperationMetadata>
       createDatasetVersionOperationSettings;
+  private final UnaryCallSettings<UpdateDatasetVersionRequest, DatasetVersion>
+      updateDatasetVersionSettings;
   private final UnaryCallSettings<DeleteDatasetVersionRequest, Operation>
       deleteDatasetVersionSettings;
   private final OperationCallSettings<DeleteDatasetVersionRequest, Empty, DeleteOperationMetadata>
@@ -681,6 +684,12 @@ public class DatasetServiceStubSettings extends StubSettings<DatasetServiceStubS
     return createDatasetVersionOperationSettings;
   }
 
+  /** Returns the object with the settings used for calls to updateDatasetVersion. */
+  public UnaryCallSettings<UpdateDatasetVersionRequest, DatasetVersion>
+      updateDatasetVersionSettings() {
+    return updateDatasetVersionSettings;
+  }
+
   /** Returns the object with the settings used for calls to deleteDatasetVersion. */
   public UnaryCallSettings<DeleteDatasetVersionRequest, Operation> deleteDatasetVersionSettings() {
     return deleteDatasetVersionSettings;
@@ -798,15 +807,6 @@ public class DatasetServiceStubSettings extends StubSettings<DatasetServiceStubS
             "Transport not supported: %s", getTransportChannelProvider().getTransportName()));
   }
 
-  /** Returns the endpoint set by the user or the the service's default endpoint. */
-  @Override
-  public String getEndpoint() {
-    if (super.getEndpoint() != null) {
-      return super.getEndpoint();
-    }
-    return getDefaultEndpoint();
-  }
-
   /** Returns the default service name. */
   @Override
   public String getServiceName() {
@@ -890,6 +890,7 @@ public class DatasetServiceStubSettings extends StubSettings<DatasetServiceStubS
     createDatasetVersionSettings = settingsBuilder.createDatasetVersionSettings().build();
     createDatasetVersionOperationSettings =
         settingsBuilder.createDatasetVersionOperationSettings().build();
+    updateDatasetVersionSettings = settingsBuilder.updateDatasetVersionSettings().build();
     deleteDatasetVersionSettings = settingsBuilder.deleteDatasetVersionSettings().build();
     deleteDatasetVersionOperationSettings =
         settingsBuilder.deleteDatasetVersionOperationSettings().build();
@@ -941,6 +942,8 @@ public class DatasetServiceStubSettings extends StubSettings<DatasetServiceStubS
     private final OperationCallSettings.Builder<
             CreateDatasetVersionRequest, DatasetVersion, CreateDatasetVersionOperationMetadata>
         createDatasetVersionOperationSettings;
+    private final UnaryCallSettings.Builder<UpdateDatasetVersionRequest, DatasetVersion>
+        updateDatasetVersionSettings;
     private final UnaryCallSettings.Builder<DeleteDatasetVersionRequest, Operation>
         deleteDatasetVersionSettings;
     private final OperationCallSettings.Builder<
@@ -1035,6 +1038,7 @@ public class DatasetServiceStubSettings extends StubSettings<DatasetServiceStubS
       exportDataOperationSettings = OperationCallSettings.newBuilder();
       createDatasetVersionSettings = UnaryCallSettings.newUnaryCallSettingsBuilder();
       createDatasetVersionOperationSettings = OperationCallSettings.newBuilder();
+      updateDatasetVersionSettings = UnaryCallSettings.newUnaryCallSettingsBuilder();
       deleteDatasetVersionSettings = UnaryCallSettings.newUnaryCallSettingsBuilder();
       deleteDatasetVersionOperationSettings = OperationCallSettings.newBuilder();
       getDatasetVersionSettings = UnaryCallSettings.newUnaryCallSettingsBuilder();
@@ -1065,6 +1069,7 @@ public class DatasetServiceStubSettings extends StubSettings<DatasetServiceStubS
               importDataSettings,
               exportDataSettings,
               createDatasetVersionSettings,
+              updateDatasetVersionSettings,
               deleteDatasetVersionSettings,
               getDatasetVersionSettings,
               listDatasetVersionsSettings,
@@ -1100,6 +1105,7 @@ public class DatasetServiceStubSettings extends StubSettings<DatasetServiceStubS
       createDatasetVersionSettings = settings.createDatasetVersionSettings.toBuilder();
       createDatasetVersionOperationSettings =
           settings.createDatasetVersionOperationSettings.toBuilder();
+      updateDatasetVersionSettings = settings.updateDatasetVersionSettings.toBuilder();
       deleteDatasetVersionSettings = settings.deleteDatasetVersionSettings.toBuilder();
       deleteDatasetVersionOperationSettings =
           settings.deleteDatasetVersionOperationSettings.toBuilder();
@@ -1131,6 +1137,7 @@ public class DatasetServiceStubSettings extends StubSettings<DatasetServiceStubS
               importDataSettings,
               exportDataSettings,
               createDatasetVersionSettings,
+              updateDatasetVersionSettings,
               deleteDatasetVersionSettings,
               getDatasetVersionSettings,
               listDatasetVersionsSettings,
@@ -1198,6 +1205,11 @@ public class DatasetServiceStubSettings extends StubSettings<DatasetServiceStubS
 
       builder
           .createDatasetVersionSettings()
+          .setRetryableCodes(RETRYABLE_CODE_DEFINITIONS.get("no_retry_codes"))
+          .setRetrySettings(RETRY_PARAM_DEFINITIONS.get("no_retry_params"));
+
+      builder
+          .updateDatasetVersionSettings()
           .setRetryableCodes(RETRYABLE_CODE_DEFINITIONS.get("no_retry_codes"))
           .setRetrySettings(RETRY_PARAM_DEFINITIONS.get("no_retry_params"));
 
@@ -1566,6 +1578,12 @@ public class DatasetServiceStubSettings extends StubSettings<DatasetServiceStubS
       return createDatasetVersionOperationSettings;
     }
 
+    /** Returns the builder for the settings used for calls to updateDatasetVersion. */
+    public UnaryCallSettings.Builder<UpdateDatasetVersionRequest, DatasetVersion>
+        updateDatasetVersionSettings() {
+      return updateDatasetVersionSettings;
+    }
+
     /** Returns the builder for the settings used for calls to deleteDatasetVersion. */
     public UnaryCallSettings.Builder<DeleteDatasetVersionRequest, Operation>
         deleteDatasetVersionSettings() {
@@ -1679,15 +1697,6 @@ public class DatasetServiceStubSettings extends StubSettings<DatasetServiceStubS
     public UnaryCallSettings.Builder<TestIamPermissionsRequest, TestIamPermissionsResponse>
         testIamPermissionsSettings() {
       return testIamPermissionsSettings;
-    }
-
-    /** Returns the endpoint set by the user or the the service's default endpoint. */
-    @Override
-    public String getEndpoint() {
-      if (super.getEndpoint() != null) {
-        return super.getEndpoint();
-      }
-      return getDefaultEndpoint();
     }
 
     @Override

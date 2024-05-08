@@ -54,7 +54,13 @@ import com.google.cloud.location.ListLocationsResponse;
 import com.google.cloud.location.Location;
 import com.google.cloud.parallelstore.v1beta.CreateInstanceRequest;
 import com.google.cloud.parallelstore.v1beta.DeleteInstanceRequest;
+import com.google.cloud.parallelstore.v1beta.ExportDataMetadata;
+import com.google.cloud.parallelstore.v1beta.ExportDataRequest;
+import com.google.cloud.parallelstore.v1beta.ExportDataResponse;
 import com.google.cloud.parallelstore.v1beta.GetInstanceRequest;
+import com.google.cloud.parallelstore.v1beta.ImportDataMetadata;
+import com.google.cloud.parallelstore.v1beta.ImportDataRequest;
+import com.google.cloud.parallelstore.v1beta.ImportDataResponse;
 import com.google.cloud.parallelstore.v1beta.Instance;
 import com.google.cloud.parallelstore.v1beta.ListInstancesRequest;
 import com.google.cloud.parallelstore.v1beta.ListInstancesResponse;
@@ -128,6 +134,12 @@ public class ParallelstoreStubSettings extends StubSettings<ParallelstoreStubSet
   private final UnaryCallSettings<DeleteInstanceRequest, Operation> deleteInstanceSettings;
   private final OperationCallSettings<DeleteInstanceRequest, Empty, OperationMetadata>
       deleteInstanceOperationSettings;
+  private final UnaryCallSettings<ImportDataRequest, Operation> importDataSettings;
+  private final OperationCallSettings<ImportDataRequest, ImportDataResponse, ImportDataMetadata>
+      importDataOperationSettings;
+  private final UnaryCallSettings<ExportDataRequest, Operation> exportDataSettings;
+  private final OperationCallSettings<ExportDataRequest, ExportDataResponse, ExportDataMetadata>
+      exportDataOperationSettings;
   private final PagedCallSettings<
           ListLocationsRequest, ListLocationsResponse, ListLocationsPagedResponse>
       listLocationsSettings;
@@ -283,6 +295,28 @@ public class ParallelstoreStubSettings extends StubSettings<ParallelstoreStubSet
     return deleteInstanceOperationSettings;
   }
 
+  /** Returns the object with the settings used for calls to importData. */
+  public UnaryCallSettings<ImportDataRequest, Operation> importDataSettings() {
+    return importDataSettings;
+  }
+
+  /** Returns the object with the settings used for calls to importData. */
+  public OperationCallSettings<ImportDataRequest, ImportDataResponse, ImportDataMetadata>
+      importDataOperationSettings() {
+    return importDataOperationSettings;
+  }
+
+  /** Returns the object with the settings used for calls to exportData. */
+  public UnaryCallSettings<ExportDataRequest, Operation> exportDataSettings() {
+    return exportDataSettings;
+  }
+
+  /** Returns the object with the settings used for calls to exportData. */
+  public OperationCallSettings<ExportDataRequest, ExportDataResponse, ExportDataMetadata>
+      exportDataOperationSettings() {
+    return exportDataOperationSettings;
+  }
+
   /** Returns the object with the settings used for calls to listLocations. */
   public PagedCallSettings<ListLocationsRequest, ListLocationsResponse, ListLocationsPagedResponse>
       listLocationsSettings() {
@@ -308,15 +342,6 @@ public class ParallelstoreStubSettings extends StubSettings<ParallelstoreStubSet
     throw new UnsupportedOperationException(
         String.format(
             "Transport not supported: %s", getTransportChannelProvider().getTransportName()));
-  }
-
-  /** Returns the endpoint set by the user or the the service's default endpoint. */
-  @Override
-  public String getEndpoint() {
-    if (super.getEndpoint() != null) {
-      return super.getEndpoint();
-    }
-    return getDefaultEndpoint();
   }
 
   /** Returns the default service name. */
@@ -421,6 +446,10 @@ public class ParallelstoreStubSettings extends StubSettings<ParallelstoreStubSet
     updateInstanceOperationSettings = settingsBuilder.updateInstanceOperationSettings().build();
     deleteInstanceSettings = settingsBuilder.deleteInstanceSettings().build();
     deleteInstanceOperationSettings = settingsBuilder.deleteInstanceOperationSettings().build();
+    importDataSettings = settingsBuilder.importDataSettings().build();
+    importDataOperationSettings = settingsBuilder.importDataOperationSettings().build();
+    exportDataSettings = settingsBuilder.exportDataSettings().build();
+    exportDataOperationSettings = settingsBuilder.exportDataOperationSettings().build();
     listLocationsSettings = settingsBuilder.listLocationsSettings().build();
     getLocationSettings = settingsBuilder.getLocationSettings().build();
   }
@@ -444,6 +473,14 @@ public class ParallelstoreStubSettings extends StubSettings<ParallelstoreStubSet
         deleteInstanceSettings;
     private final OperationCallSettings.Builder<DeleteInstanceRequest, Empty, OperationMetadata>
         deleteInstanceOperationSettings;
+    private final UnaryCallSettings.Builder<ImportDataRequest, Operation> importDataSettings;
+    private final OperationCallSettings.Builder<
+            ImportDataRequest, ImportDataResponse, ImportDataMetadata>
+        importDataOperationSettings;
+    private final UnaryCallSettings.Builder<ExportDataRequest, Operation> exportDataSettings;
+    private final OperationCallSettings.Builder<
+            ExportDataRequest, ExportDataResponse, ExportDataMetadata>
+        exportDataOperationSettings;
     private final PagedCallSettings.Builder<
             ListLocationsRequest, ListLocationsResponse, ListLocationsPagedResponse>
         listLocationsSettings;
@@ -483,6 +520,10 @@ public class ParallelstoreStubSettings extends StubSettings<ParallelstoreStubSet
       updateInstanceOperationSettings = OperationCallSettings.newBuilder();
       deleteInstanceSettings = UnaryCallSettings.newUnaryCallSettingsBuilder();
       deleteInstanceOperationSettings = OperationCallSettings.newBuilder();
+      importDataSettings = UnaryCallSettings.newUnaryCallSettingsBuilder();
+      importDataOperationSettings = OperationCallSettings.newBuilder();
+      exportDataSettings = UnaryCallSettings.newUnaryCallSettingsBuilder();
+      exportDataOperationSettings = OperationCallSettings.newBuilder();
       listLocationsSettings = PagedCallSettings.newBuilder(LIST_LOCATIONS_PAGE_STR_FACT);
       getLocationSettings = UnaryCallSettings.newUnaryCallSettingsBuilder();
 
@@ -493,6 +534,8 @@ public class ParallelstoreStubSettings extends StubSettings<ParallelstoreStubSet
               createInstanceSettings,
               updateInstanceSettings,
               deleteInstanceSettings,
+              importDataSettings,
+              exportDataSettings,
               listLocationsSettings,
               getLocationSettings);
       initDefaults(this);
@@ -509,6 +552,10 @@ public class ParallelstoreStubSettings extends StubSettings<ParallelstoreStubSet
       updateInstanceOperationSettings = settings.updateInstanceOperationSettings.toBuilder();
       deleteInstanceSettings = settings.deleteInstanceSettings.toBuilder();
       deleteInstanceOperationSettings = settings.deleteInstanceOperationSettings.toBuilder();
+      importDataSettings = settings.importDataSettings.toBuilder();
+      importDataOperationSettings = settings.importDataOperationSettings.toBuilder();
+      exportDataSettings = settings.exportDataSettings.toBuilder();
+      exportDataOperationSettings = settings.exportDataOperationSettings.toBuilder();
       listLocationsSettings = settings.listLocationsSettings.toBuilder();
       getLocationSettings = settings.getLocationSettings.toBuilder();
 
@@ -519,6 +566,8 @@ public class ParallelstoreStubSettings extends StubSettings<ParallelstoreStubSet
               createInstanceSettings,
               updateInstanceSettings,
               deleteInstanceSettings,
+              importDataSettings,
+              exportDataSettings,
               listLocationsSettings,
               getLocationSettings);
     }
@@ -570,6 +619,16 @@ public class ParallelstoreStubSettings extends StubSettings<ParallelstoreStubSet
 
       builder
           .deleteInstanceSettings()
+          .setRetryableCodes(RETRYABLE_CODE_DEFINITIONS.get("no_retry_codes"))
+          .setRetrySettings(RETRY_PARAM_DEFINITIONS.get("no_retry_params"));
+
+      builder
+          .importDataSettings()
+          .setRetryableCodes(RETRYABLE_CODE_DEFINITIONS.get("no_retry_codes"))
+          .setRetrySettings(RETRY_PARAM_DEFINITIONS.get("no_retry_params"));
+
+      builder
+          .exportDataSettings()
           .setRetryableCodes(RETRYABLE_CODE_DEFINITIONS.get("no_retry_codes"))
           .setRetrySettings(RETRY_PARAM_DEFINITIONS.get("no_retry_params"));
 
@@ -655,6 +714,52 @@ public class ParallelstoreStubSettings extends StubSettings<ParallelstoreStubSet
                       .setTotalTimeout(Duration.ofMillis(300000L))
                       .build()));
 
+      builder
+          .importDataOperationSettings()
+          .setInitialCallSettings(
+              UnaryCallSettings.<ImportDataRequest, OperationSnapshot>newUnaryCallSettingsBuilder()
+                  .setRetryableCodes(RETRYABLE_CODE_DEFINITIONS.get("no_retry_codes"))
+                  .setRetrySettings(RETRY_PARAM_DEFINITIONS.get("no_retry_params"))
+                  .build())
+          .setResponseTransformer(
+              ProtoOperationTransformers.ResponseTransformer.create(ImportDataResponse.class))
+          .setMetadataTransformer(
+              ProtoOperationTransformers.MetadataTransformer.create(ImportDataMetadata.class))
+          .setPollingAlgorithm(
+              OperationTimedPollAlgorithm.create(
+                  RetrySettings.newBuilder()
+                      .setInitialRetryDelay(Duration.ofMillis(5000L))
+                      .setRetryDelayMultiplier(1.5)
+                      .setMaxRetryDelay(Duration.ofMillis(45000L))
+                      .setInitialRpcTimeout(Duration.ZERO)
+                      .setRpcTimeoutMultiplier(1.0)
+                      .setMaxRpcTimeout(Duration.ZERO)
+                      .setTotalTimeout(Duration.ofMillis(300000L))
+                      .build()));
+
+      builder
+          .exportDataOperationSettings()
+          .setInitialCallSettings(
+              UnaryCallSettings.<ExportDataRequest, OperationSnapshot>newUnaryCallSettingsBuilder()
+                  .setRetryableCodes(RETRYABLE_CODE_DEFINITIONS.get("no_retry_codes"))
+                  .setRetrySettings(RETRY_PARAM_DEFINITIONS.get("no_retry_params"))
+                  .build())
+          .setResponseTransformer(
+              ProtoOperationTransformers.ResponseTransformer.create(ExportDataResponse.class))
+          .setMetadataTransformer(
+              ProtoOperationTransformers.MetadataTransformer.create(ExportDataMetadata.class))
+          .setPollingAlgorithm(
+              OperationTimedPollAlgorithm.create(
+                  RetrySettings.newBuilder()
+                      .setInitialRetryDelay(Duration.ofMillis(5000L))
+                      .setRetryDelayMultiplier(1.5)
+                      .setMaxRetryDelay(Duration.ofMillis(45000L))
+                      .setInitialRpcTimeout(Duration.ZERO)
+                      .setRpcTimeoutMultiplier(1.0)
+                      .setMaxRpcTimeout(Duration.ZERO)
+                      .setTotalTimeout(Duration.ofMillis(300000L))
+                      .build()));
+
       return builder;
     }
 
@@ -718,6 +823,28 @@ public class ParallelstoreStubSettings extends StubSettings<ParallelstoreStubSet
       return deleteInstanceOperationSettings;
     }
 
+    /** Returns the builder for the settings used for calls to importData. */
+    public UnaryCallSettings.Builder<ImportDataRequest, Operation> importDataSettings() {
+      return importDataSettings;
+    }
+
+    /** Returns the builder for the settings used for calls to importData. */
+    public OperationCallSettings.Builder<ImportDataRequest, ImportDataResponse, ImportDataMetadata>
+        importDataOperationSettings() {
+      return importDataOperationSettings;
+    }
+
+    /** Returns the builder for the settings used for calls to exportData. */
+    public UnaryCallSettings.Builder<ExportDataRequest, Operation> exportDataSettings() {
+      return exportDataSettings;
+    }
+
+    /** Returns the builder for the settings used for calls to exportData. */
+    public OperationCallSettings.Builder<ExportDataRequest, ExportDataResponse, ExportDataMetadata>
+        exportDataOperationSettings() {
+      return exportDataOperationSettings;
+    }
+
     /** Returns the builder for the settings used for calls to listLocations. */
     public PagedCallSettings.Builder<
             ListLocationsRequest, ListLocationsResponse, ListLocationsPagedResponse>
@@ -728,15 +855,6 @@ public class ParallelstoreStubSettings extends StubSettings<ParallelstoreStubSet
     /** Returns the builder for the settings used for calls to getLocation. */
     public UnaryCallSettings.Builder<GetLocationRequest, Location> getLocationSettings() {
       return getLocationSettings;
-    }
-
-    /** Returns the endpoint set by the user or the the service's default endpoint. */
-    @Override
-    public String getEndpoint() {
-      if (super.getEndpoint() != null) {
-        return super.getEndpoint();
-      }
-      return getDefaultEndpoint();
     }
 
     @Override

@@ -51,11 +51,13 @@ import com.google.cloud.discoveryengine.v1alpha.CreateDocumentRequest;
 import com.google.cloud.discoveryengine.v1alpha.DeleteDocumentRequest;
 import com.google.cloud.discoveryengine.v1alpha.Document;
 import com.google.cloud.discoveryengine.v1alpha.GetDocumentRequest;
+import com.google.cloud.discoveryengine.v1alpha.GetProcessedDocumentRequest;
 import com.google.cloud.discoveryengine.v1alpha.ImportDocumentsMetadata;
 import com.google.cloud.discoveryengine.v1alpha.ImportDocumentsRequest;
 import com.google.cloud.discoveryengine.v1alpha.ImportDocumentsResponse;
 import com.google.cloud.discoveryengine.v1alpha.ListDocumentsRequest;
 import com.google.cloud.discoveryengine.v1alpha.ListDocumentsResponse;
+import com.google.cloud.discoveryengine.v1alpha.ProcessedDocument;
 import com.google.cloud.discoveryengine.v1alpha.PurgeDocumentsMetadata;
 import com.google.cloud.discoveryengine.v1alpha.PurgeDocumentsRequest;
 import com.google.cloud.discoveryengine.v1alpha.PurgeDocumentsResponse;
@@ -131,6 +133,8 @@ public class DocumentServiceStubSettings extends StubSettings<DocumentServiceStu
   private final OperationCallSettings<
           PurgeDocumentsRequest, PurgeDocumentsResponse, PurgeDocumentsMetadata>
       purgeDocumentsOperationSettings;
+  private final UnaryCallSettings<GetProcessedDocumentRequest, ProcessedDocument>
+      getProcessedDocumentSettings;
 
   private static final PagedListDescriptor<ListDocumentsRequest, ListDocumentsResponse, Document>
       LIST_DOCUMENTS_PAGE_STR_DESC =
@@ -235,6 +239,12 @@ public class DocumentServiceStubSettings extends StubSettings<DocumentServiceStu
     return purgeDocumentsOperationSettings;
   }
 
+  /** Returns the object with the settings used for calls to getProcessedDocument. */
+  public UnaryCallSettings<GetProcessedDocumentRequest, ProcessedDocument>
+      getProcessedDocumentSettings() {
+    return getProcessedDocumentSettings;
+  }
+
   public DocumentServiceStub createStub() throws IOException {
     if (getTransportChannelProvider()
         .getTransportName()
@@ -249,15 +259,6 @@ public class DocumentServiceStubSettings extends StubSettings<DocumentServiceStu
     throw new UnsupportedOperationException(
         String.format(
             "Transport not supported: %s", getTransportChannelProvider().getTransportName()));
-  }
-
-  /** Returns the endpoint set by the user or the the service's default endpoint. */
-  @Override
-  public String getEndpoint() {
-    if (super.getEndpoint() != null) {
-      return super.getEndpoint();
-    }
-    return getDefaultEndpoint();
   }
 
   /** Returns the default service name. */
@@ -363,6 +364,7 @@ public class DocumentServiceStubSettings extends StubSettings<DocumentServiceStu
     importDocumentsOperationSettings = settingsBuilder.importDocumentsOperationSettings().build();
     purgeDocumentsSettings = settingsBuilder.purgeDocumentsSettings().build();
     purgeDocumentsOperationSettings = settingsBuilder.purgeDocumentsOperationSettings().build();
+    getProcessedDocumentSettings = settingsBuilder.getProcessedDocumentSettings().build();
   }
 
   /** Builder for DocumentServiceStubSettings. */
@@ -385,6 +387,8 @@ public class DocumentServiceStubSettings extends StubSettings<DocumentServiceStu
     private final OperationCallSettings.Builder<
             PurgeDocumentsRequest, PurgeDocumentsResponse, PurgeDocumentsMetadata>
         purgeDocumentsOperationSettings;
+    private final UnaryCallSettings.Builder<GetProcessedDocumentRequest, ProcessedDocument>
+        getProcessedDocumentSettings;
     private static final ImmutableMap<String, ImmutableSet<StatusCode.Code>>
         RETRYABLE_CODE_DEFINITIONS;
 
@@ -446,6 +450,7 @@ public class DocumentServiceStubSettings extends StubSettings<DocumentServiceStu
       importDocumentsOperationSettings = OperationCallSettings.newBuilder();
       purgeDocumentsSettings = UnaryCallSettings.newUnaryCallSettingsBuilder();
       purgeDocumentsOperationSettings = OperationCallSettings.newBuilder();
+      getProcessedDocumentSettings = UnaryCallSettings.newUnaryCallSettingsBuilder();
 
       unaryMethodSettingsBuilders =
           ImmutableList.<UnaryCallSettings.Builder<?, ?>>of(
@@ -455,7 +460,8 @@ public class DocumentServiceStubSettings extends StubSettings<DocumentServiceStu
               updateDocumentSettings,
               deleteDocumentSettings,
               importDocumentsSettings,
-              purgeDocumentsSettings);
+              purgeDocumentsSettings,
+              getProcessedDocumentSettings);
       initDefaults(this);
     }
 
@@ -471,6 +477,7 @@ public class DocumentServiceStubSettings extends StubSettings<DocumentServiceStu
       importDocumentsOperationSettings = settings.importDocumentsOperationSettings.toBuilder();
       purgeDocumentsSettings = settings.purgeDocumentsSettings.toBuilder();
       purgeDocumentsOperationSettings = settings.purgeDocumentsOperationSettings.toBuilder();
+      getProcessedDocumentSettings = settings.getProcessedDocumentSettings.toBuilder();
 
       unaryMethodSettingsBuilders =
           ImmutableList.<UnaryCallSettings.Builder<?, ?>>of(
@@ -480,7 +487,8 @@ public class DocumentServiceStubSettings extends StubSettings<DocumentServiceStu
               updateDocumentSettings,
               deleteDocumentSettings,
               importDocumentsSettings,
-              purgeDocumentsSettings);
+              purgeDocumentsSettings,
+              getProcessedDocumentSettings);
     }
 
     private static Builder createDefault() {
@@ -540,6 +548,11 @@ public class DocumentServiceStubSettings extends StubSettings<DocumentServiceStu
 
       builder
           .purgeDocumentsSettings()
+          .setRetryableCodes(RETRYABLE_CODE_DEFINITIONS.get("retry_policy_1_codes"))
+          .setRetrySettings(RETRY_PARAM_DEFINITIONS.get("retry_policy_1_params"));
+
+      builder
+          .getProcessedDocumentSettings()
           .setRetryableCodes(RETRYABLE_CODE_DEFINITIONS.get("retry_policy_1_codes"))
           .setRetrySettings(RETRY_PARAM_DEFINITIONS.get("retry_policy_1_params"));
 
@@ -660,13 +673,10 @@ public class DocumentServiceStubSettings extends StubSettings<DocumentServiceStu
       return purgeDocumentsOperationSettings;
     }
 
-    /** Returns the endpoint set by the user or the the service's default endpoint. */
-    @Override
-    public String getEndpoint() {
-      if (super.getEndpoint() != null) {
-        return super.getEndpoint();
-      }
-      return getDefaultEndpoint();
+    /** Returns the builder for the settings used for calls to getProcessedDocument. */
+    public UnaryCallSettings.Builder<GetProcessedDocumentRequest, ProcessedDocument>
+        getProcessedDocumentSettings() {
+      return getProcessedDocumentSettings;
     }
 
     @Override
