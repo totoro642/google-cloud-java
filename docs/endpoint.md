@@ -1,6 +1,6 @@
 # Client Library Endpoint
-Client libraries will automatically resolve an endpoint to use. The default resolved endpoint
-will be to Google servers (i.e. `https://{serviceName}.googleapis.com:443`).
+Google Client libraries will automatically resolve an endpoint to connect to Google Cloud services. 
+The default resolved endpoint will be to Google servers (i.e. `https://{serviceName}.googleapis.com:443`).
 
 ## Anatomy of an Endpoint
 Using the default Java-Speech endpoint as an example: `https://speech.googleapis.com:443`:
@@ -17,12 +17,8 @@ Default values for client libraries:
 Service Name doesn't have a default value. This is different for each cloud service.
 
 ## Configuring a Specific Endpoint
-There are two ways to configure the endpoint in Java Client Libraries. 
-
-Configuring the endpoint will update the *entire* endpoint value. Currently, you cannot change
-the individual sections of the endpoint (i.e. set the scheme or port value individually). 
-
-Note: You may configure the [Universe Domain](universe_domain.md) in a separate Setter.
+There are two ways to configure the endpoint in Java Client Libraries: ServiceSettings or
+TransportChannelProvider.
 
 ### Set through the generated {Service}Settings
 The following example is using Java-KMS v2.42.0 as an example:
@@ -92,7 +88,7 @@ The endpoint will be resolved to `transportendpoint.com`.
 ### Endpoint Hierarchy
 1. If set in the TransportChannelProvider, use this value. Otherwise, go to the next step.
 2. If set via the ClientSettings, use this value. Otherwise, go to the next step.
-3. Use the default endpoint
+3. Use the default endpoint (i.e. `https://{serviceName}.googleapis.com:443`)
 
 ### How can I confirm the endpoint the library is using
 Assuming you have configured a custom endpoint, like: 
@@ -109,5 +105,5 @@ the resolved endpoint back.
 
 ## When should I specify my custom endpoint
 There are a few use cases:
-1. Service offers [regional endpoints](https://cloud.google.com/java/docs/setup#configure_endpoints_for_the_client_library) and should not hit the default endpoint.
+1. Service offers [regional endpoints](https://cloud.google.com/java/docs/setup#configure_endpoints_for_the_client_library) and you do not want the default endpoint.
 2. Service can't use https (i.e. local testing to hit localhost)
