@@ -1,12 +1,13 @@
 # Universe Domain
-See [Anatomy of an Endpoint](endpoint.md#anatomy-of-an-endpoint) for more information
-about how the Universe Domain is used as part of an endpoint.
+See [Anatomy of an Endpoint](endpoint.md#anatomy-of-an-endpoint) for more information about how the Universe Domain is used
+as part of an endpoint.
 
 Universe Domain default value: `googleapis.com`. This is known as the Google Default
 Universe (GDU). If the Universe Domain value is not specified, the GDU value is used.
 
 ## Configuring a Specific Universe Domain
-There are two ways to configure the endpoint in Java Client Libraries.
+There are two ways to configure the endpoint in Java Client Libraries: ServiceSettings and
+Environment Variable.
 
 ### Set through the generated {Service}Settings
 Configuring the Universe Domain is done via the generated {Service}Settings. The following example
@@ -69,9 +70,10 @@ KeyManagementServiceSettings keyManagementServiceSettings =
 You can retrieve the endpoint from the Setting's `getUniverseDomain()` method. This will return
 the resolved Universe Domain back.
 
-## Compatibility with ...
+## Universe Domain Compatibility with
 ### ... DirectPath
-Currently, DirectPath code only works in the GDU
+Currently, DirectPath code only works in the GDU. If the Universe Domain is configured to not be in the
+GDU, DirectPath will not be used.
 ### ... GDC-H
 Universe Domain is incompatible with GDC-H. Do not set the Universe Domain if you are using GDC-H
 Credentials.

@@ -17,7 +17,7 @@ Default values for client libraries:
 Service Name doesn't have a default value. This is different for each cloud service.
 
 ## Configuring a Specific Endpoint
-There are two ways to configure the endpoint in Java Client Libraries: ServiceSettings or
+There are two ways to configure the endpoint in Java Client Libraries: ServiceSettings and
 TransportChannelProvider.
 
 ### Set through the generated {Service}Settings
