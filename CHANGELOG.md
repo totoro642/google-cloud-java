@@ -1,5 +1,38 @@
 # Changelog
 
+## [1.41.0](https://github.com/googleapis/google-cloud-java/compare/v1.40.0...v1.41.0) (2024-07-09)
+
+
+### Features
+
+* [aiplatform] add model and contents fields to ComputeTokensRequest v1 ([f4a2a5a](https://github.com/googleapis/google-cloud-java/commit/f4a2a5ae3f2771343e09af1933ba4a9ee28edcd6))
+* [aiplatform] add model and contents fields to ComputeTokensRequest v1beta1 ([f4a2a5a](https://github.com/googleapis/google-cloud-java/commit/f4a2a5ae3f2771343e09af1933ba4a9ee28edcd6))
+* [aiplatform] add UpdateDeploymentResourcePool method to DeploymentResourcePoolService v1 ([f4a2a5a](https://github.com/googleapis/google-cloud-java/commit/f4a2a5ae3f2771343e09af1933ba4a9ee28edcd6))
+* [aiplatform] add UpdateDeploymentResourcePool method to DeploymentResourcePoolService v1beta1 ([f4a2a5a](https://github.com/googleapis/google-cloud-java/commit/f4a2a5ae3f2771343e09af1933ba4a9ee28edcd6))
+* [analyticshub] support public directory self service for Listings/Exchanges ([f4a2a5a](https://github.com/googleapis/google-cloud-java/commit/f4a2a5ae3f2771343e09af1933ba4a9ee28edcd6))
+* [chat] Add doc for Discoverable Space support for GA launch ([f4a2a5a](https://github.com/googleapis/google-cloud-java/commit/f4a2a5ae3f2771343e09af1933ba4a9ee28edcd6))
+* [dataplex] expose data scan execution create time to customers ([f4a2a5a](https://github.com/googleapis/google-cloud-java/commit/f4a2a5ae3f2771343e09af1933ba4a9ee28edcd6))
+* [discoveryengine] add Chunk resource in the search response ([f4a2a5a](https://github.com/googleapis/google-cloud-java/commit/f4a2a5ae3f2771343e09af1933ba4a9ee28edcd6))
+* [edgenetwork] A new field `bonding_type` is added to message `.google.cloud.edgenetwork.v1.Subnet` ([f1438e5](https://github.com/googleapis/google-cloud-java/commit/f1438e5d2077b245f2167e57fc5af104ad34283b))
+* [parallelstore] add iam.googleapis.com/ServiceAccount resource definition ([f4a2a5a](https://github.com/googleapis/google-cloud-java/commit/f4a2a5ae3f2771343e09af1933ba4a9ee28edcd6))
+* [securitycenter] added cloud provider field to list findings response ([f4a2a5a](https://github.com/googleapis/google-cloud-java/commit/f4a2a5ae3f2771343e09af1933ba4a9ee28edcd6))
+* [securitycenter] added cloud provider field to list findings response ([f1438e5](https://github.com/googleapis/google-cloud-java/commit/f1438e5d2077b245f2167e57fc5af104ad34283b))
+
+
+### Bug Fixes
+
+* [container] Deprecate "EXPERIMENTAL" option for Gateway API (this value has never been supported) ([f4a2a5a](https://github.com/googleapis/google-cloud-java/commit/f4a2a5ae3f2771343e09af1933ba4a9ee28edcd6))
+* **deps:** update dependency com.google.apis:google-api-services-dns to v1-rev20240531-2.0.0 ([#10948](https://github.com/googleapis/google-cloud-java/issues/10948)) ([2b14251](https://github.com/googleapis/google-cloud-java/commit/2b14251bfeb9251a304f07bf698d2926f197b5ab))
+* **deps:** update dependency com.google.apis:google-api-services-storage to v1-rev20240621-2.0.0 ([#10884](https://github.com/googleapis/google-cloud-java/issues/10884)) ([0ae9818](https://github.com/googleapis/google-cloud-java/commit/0ae98182b41d370b8ad3eaffd583b164e0a8ab0a))
+* **deps:** update dependency com.google.cloud:google-cloud-pubsub-bom to v1.131.0 ([#10798](https://github.com/googleapis/google-cloud-java/issues/10798)) ([5d55d0c](https://github.com/googleapis/google-cloud-java/commit/5d55d0cdae0f81e54fcb5a24be1eceb9f0781383))
+* **deps:** update dependency com.google.cloud:google-cloud-storage to v2.40.1 ([#10996](https://github.com/googleapis/google-cloud-java/issues/10996)) ([1d97e4d](https://github.com/googleapis/google-cloud-java/commit/1d97e4db6d5106aad8fed2386151c457e0258de3))
+
+
+### Documentation
+
+* [chat] Update doc for `SetUpSpace` in service `ChatService` to support group members ([f1438e5](https://github.com/googleapis/google-cloud-java/commit/f1438e5d2077b245f2167e57fc5af104ad34283b))
+* [life-sciences] modify example accelerator type ([f1438e5](https://github.com/googleapis/google-cloud-java/commit/f1438e5d2077b245f2167e57fc5af104ad34283b))
+
 ## [1.40.0](https://github.com/googleapis/google-cloud-java/compare/v1.39.0...v1.40.0) (2024-06-27)
 
 
